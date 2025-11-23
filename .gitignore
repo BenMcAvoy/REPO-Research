@@ -1,0 +1,6 @@
+x64
+vcpkg_installed
+.vs
+.vscode
+*.vcxproj.*
+vcpkg_installed

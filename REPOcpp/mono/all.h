@@ -1,0 +1,18 @@
+#pragma once
+
+#include "appdomain.h"
+#include "assembly.h"
+#include "blob.h"
+#include "class.h"
+#include "image.h"
+#include "loader.h"
+#include "metadata.h"
+#include "mono-debug.h"
+#include "mono-error.h"
+#include "mono-forward.h"
+#include "mono-publib.h"
+#include "object.h"
+#include "object-forward.h"
+#include "reflection.h"
+#include "row-indexes.h"
+#include "threads.h"
