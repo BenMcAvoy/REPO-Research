@@ -37,10 +37,13 @@
     <ClInclude Include="mono\reflection.h" />
     <ClInclude Include="mono\row-indexes.h" />
     <ClInclude Include="mono\threads.h" />
-    <ClInclude Include="present.h" />
+    <ClInclude Include="overlay.h" />
+    <ClInclude Include="scanners.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="overlay.cpp" />
+    <ClCompile Include="scanners.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -8,8 +8,11 @@
 #include <imgui.h>
 #include <dxgi.h>
 
-#include "present.h"
 #include "monoHelpers.h"
+
+#include "scanners.h"
+
+#include "overlay.h"
 
 HMODULE gHMono = NULL;
 MonoImage* gAssemblyCSharp = nullptr;
@@ -193,6 +196,10 @@ static void DrawPlayerESP() {
 	}
 }
 
+static LRESULT CALLBACK CustomWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
+	return 0;
+}
+
 DWORD MainThread(LPVOID lpParam) {
 	AllocConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
@@ -211,9 +218,9 @@ DWORD MainThread(LPVOID lpParam) {
 
 	//DumpTypes(asmCSharp);
 
-	static bool* outerTakesFocus = nullptr;
+	/*static bool* outerTakesFocus = nullptr;
     auto& presentManager = PresentManager_t::get();
-	presentManager.setOnPresentCallback([](bool& takesFocus, IDXGISwapChain* /*pSwapChain*/, UINT /*SyncInterval*/, UINT /*Flags*/) {
+	presentManager.setOnPresentCallback([](bool& takesFocus, IDXGISwapChain, UINT, UINT) {
 		outerTakesFocus = &takesFocus;
 
 		static bool attached = false;
@@ -226,17 +233,34 @@ DWORD MainThread(LPVOID lpParam) {
 		DrawItemESP();
 		DrawEnemyESP();
 		DrawPlayerESP();
-		});
+		});*/
+
+	static bool takesFocus = true;
+
+	auto render = [](const RenderData& renderData) {
+		static bool attached = false;
+		if (!attached) {
+			MP::mono_thread_attach(MP::mono_get_root_domain());
+			attached = true;
+		}
+
+		DrawValuableESP();
+		DrawItemESP();
+		DrawEnemyESP();
+		DrawPlayerESP();
+	};
+
+	HookOverlay(render, CustomWndProc);
 
     while (!GetAsyncKeyState(VK_END)) {
         if (GetAsyncKeyState(VK_INSERT) & 1) {
-            if (outerTakesFocus) *outerTakesFocus = !*outerTakesFocus;
+            if (takesFocus) takesFocus = !takesFocus;
         }
 
         Sleep(100);
     }
 
-	presentManager.shutdown();
+	ShutdownOverlay();
 	Sleep(500); // Give some time for any in-flight presents to finish
 
 	FreeLibraryAndExitThread(static_cast<HMODULE>(lpParam), 0);
