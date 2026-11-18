@@ -18,3 +18,7 @@ The current prototype includes in-game overlays and writes to managed game state
 - `overlay.*` and `main.cpp` contain the overlay and runtime-inspection prototype.
 
 The repository includes a Visual Studio solution and vcpkg manifests for Windows development. The game and its runtime are not included.
+
+## Defensive analysis
+
+See [DEFENSIVE_ANALYSIS.md](DEFENSIVE_ANALYSIS.md) for a threat model and design considerations around client-side state inspection and modification. This repository does not implement or evaluate those defenses.
